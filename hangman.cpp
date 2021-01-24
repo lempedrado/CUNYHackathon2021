@@ -15,6 +15,8 @@ void hangman(int i);
 void gameover(int i);
 // give user a hint if they get nothing
 void hint();
+//give user a hint towards end
+void mercyHint();
 // check for numerical entry
 bool isNumeric(string s);
 
@@ -36,7 +38,7 @@ int main()
   // text file to word array
   using namespace std;
   ifstream file;
-  file.open("word.txt");
+  file.open("words.txt");
   for(int i = 0; i < 270; i++)
   {
     file >> words[i];
@@ -192,32 +194,37 @@ void hangman(int i)
       cout << "| |" << endl;
     break;
     case 2:
-      cout << "Word: " << blank << "  Wrong guesses: "  << pastGuesses << endl;
-      cout << " ___________" << endl;
-      cout << "|  _________|\tScore: " << score << endl;
-      cout << "| |      |" << endl;
-      cout << "| |      |" << endl;
-      cout << "| |      O" << endl;
-      cout << "| |      | " << endl;
-      cout << "| |     " << endl;
-      cout << "| |" << endl;
-    break;
+        if (correct == 0 && word.size() > 4)
+        {
+            cout << "Here is a hint" << endl;
+            hint();
+        }
+        cout << "Word: " << blank << "  Wrong guesses: " << pastGuesses << endl;
+        cout << " ___________" << endl;
+        cout << "|  _________|\tScore: " << score << endl;
+        cout << "| |      |" << endl;
+        cout << "| |      |" << endl;
+        cout << "| |      O" << endl;
+        cout << "| |      | " << endl;
+        cout << "| |     " << endl;
+        cout << "| |" << endl;
+        break;
     case 3:
-      if (correct == 0)
-      {
-        cout << "Here is a hint" << endl;
-        hint();
-      }
-      cout << "Word: " << blank << "  Wrong guesses: "  << pastGuesses << endl;
-      cout << " ___________" << endl;
-      cout << "|  _________|\tScore: " << score << endl;
-      cout << "| |      |" << endl;
-      cout << "| |      |" << endl;
-      cout << "| |      O" << endl;
-      cout << "| |     /|" << endl;
-      cout << "| |     " << endl;
-      cout << "| |" << endl;
-    break;
+        if (correct == 0)
+        {
+            cout << "Here is a hint" << endl;
+            hint();
+        }
+        cout << "Word: " << blank << "  Wrong guesses: " << pastGuesses << endl;
+        cout << " ___________" << endl;
+        cout << "|  _________|\tScore: " << score << endl;
+        cout << "| |      |" << endl;
+        cout << "| |      |" << endl;
+        cout << "| |      O" << endl;
+        cout << "| |     /|" << endl;
+        cout << "| |     " << endl;
+        cout << "| |" << endl;
+        break;
     case 4:
       cout << "Word: " << blank << "  Wrong guesses: "  << pastGuesses << endl;
       cout << " ___________" << endl;
@@ -230,6 +237,11 @@ void hangman(int i)
       cout << "| |" << endl;
     break;
     case 5:
+      if(word.size() - correct >= 4)
+      {
+        cout << "Wow you really need help!" << endl;
+        mercyHint();
+      }
       cout << "Word: " << blank << "  Wrong guesses: "  << pastGuesses << endl;
       cout << " ___________" << endl;
       cout << "|  _________|\tScore: " << score << endl;
@@ -270,6 +282,24 @@ void hint()
   }
 }
 
+// reveal first missing character and every character that is the same
+void mercyHint()
+{
+  // find first unrevealed characters
+  int i = blank.find('_');
+  char c = word[i/2];
+  blank[i] = c;
+  correct += 1;
+  for (i = i + 1; i < word.size(); i++)
+  {
+   if (word[i] == c )
+    {
+      blank[i * 2] = c;
+      correct += 1;
+    } 
+  }
+} 
+
 // check for digits
 bool isNumeric(string s) 
 {
@@ -289,10 +319,15 @@ void gameover(int i)
     cout << "You killed him, you did this!" << endl;
     score -= 50;
   }
-  // prompt the user for an input if its 2 quit, 1 to restart go to start menu, if morfe than one character check to see if match to whole word if yes win message
-  int entry;
-  cout << "Enter 1 to restart. Enter anything else to quit." << endl;
+
+  // prompt the user for an input if its 1, restart and go to start menu, if anything else, quit
+  string entry;
+  cout << "Enter 1 to restart. Enter anything else to quit.\nYour current score is: " << score << endl;
   cin >> entry;
-  if (entry == 1) newGame();
-  else  return;
+  if (entry == "1") 
+  {
+    newGame();
+  }
+  else 
+    exit(0);
 }
