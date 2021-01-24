@@ -4,6 +4,7 @@
 #include <fstream>
 #include <cmath>
 using namespace std;
+
 // reset game state
 void newGame();
 // game logic
@@ -28,11 +29,11 @@ string word;
 // underscores
 string blank;
 // highscore
-unsigned int score = 0;
+int score = 0;
  
-int main() {
-  
-// text file to word array
+int main() 
+{
+  // text file to word array
   using namespace std;
   ifstream file;
   file.open("word.txt");
@@ -41,7 +42,7 @@ int main() {
     file >> words[i];
   }
 
-// prompt user to enter something to start
+  // prompt user to enter something to start
   string entry;
   cout << "Enter anything when ready to start: "<< endl; 
   cin >> entry;
@@ -51,10 +52,10 @@ int main() {
 // restarts the game
 void newGame()
 {
-// randomly pick word from array
+  // randomly pick word from array
   srand(time(0));
   word = words[rand() % 270];
-// create a string of "_" = to the length of the random word
+  // create a string of "_ " = to the length of the random word
   blank = "";
   for(int i = 0; i < word.size(); i++)
     blank += "_ ";
@@ -73,7 +74,8 @@ void game()
   int life = 0;
   
   // keep looping until all chances taken
-  while(life < 6){
+  while(life < 6)
+  {
     // print hangman
     hangman(life);
     // get user input
@@ -90,7 +92,8 @@ void game()
     else if (guess.size() > 1)
     { 
       // reject if wrong size
-      if(guess.size() != word.size()) {
+      if(guess.size() != word.size()) 
+      {
         cout << "Wrong length, try again." << endl;       
       }
       // if right size check match
@@ -108,11 +111,11 @@ void game()
         hangman(life);
         gameover(1);
       }
-    }
+    } 
     // check if character already guessed
     else if (pastGuesses.find(guess) != -1)
     {
-      cout << "You already guessed this character" << endl;
+      cout << "You already guessed this incorrect character" << endl;
     }
     // check if character in word
     else if(word.find(guess) == -1) 
@@ -122,22 +125,27 @@ void game()
         life++;
         pastGuesses += guess[0];
       }
-      
-      // if user guesses the right letter reveal all matches 
+    // check to see if already shown  
+    else if (blank.find(guess) != -1)
+    {
+      cout << "You already guessed this correctly" << endl;
+    }  
+      // if user guesses the right letter and it wasn't already guess 
     else
     { 
       cout << "You guessed a correct character" << endl;
       char c = guess[0];
       blank[word.find(c) * 2] = c;
       correct += 1;
-       score += 10;
+      score += 10;
       // look to see if character appears multiple times and reveal all occurences
-      for(int i = word.find(guess) + 1; i < word.size(); i++) {
-        if (word[i] == c )
+      for(int i = word.find(guess) + 1; i < word.size(); i++) 
+      {
+        if (word[i] == c)
           {
             blank[i * 2] = c;
             correct += 1;
-             score += 10;
+            score += 10;
           }   
       }
       // if correct guesses is the same as the word length player guessed whole word
@@ -159,7 +167,8 @@ void game()
 // print hangman based on chances used
 void hangman(int i)
 {
-  switch(i){
+  switch(i)
+  {
     case 0:
       cout << "Word: " << blank << endl;
       cout << " ___________" << endl;
@@ -172,7 +181,7 @@ void hangman(int i)
       cout << "| |" << endl;
     break;
     case 1:
-      cout << "Word: " << blank << "  Guesses: "  << pastGuesses << endl;
+      cout << "Word: " << blank << " Wrong guesses: "  << pastGuesses << endl;
       cout << " ___________" << endl;
       cout << "|  _________|\tScore: " << score << endl;
       cout << "| |      |" << endl;
@@ -183,7 +192,7 @@ void hangman(int i)
       cout << "| |" << endl;
     break;
     case 2:
-      cout << "Word: " << blank << "  Guesses: "  << pastGuesses << endl;
+      cout << "Word: " << blank << "  Wrong guesses: "  << pastGuesses << endl;
       cout << " ___________" << endl;
       cout << "|  _________|\tScore: " << score << endl;
       cout << "| |      |" << endl;
@@ -199,7 +208,7 @@ void hangman(int i)
         cout << "Here is a hint" << endl;
         hint();
       }
-      cout << "Word: " << blank << "  Guesses: "  << pastGuesses << endl;
+      cout << "Word: " << blank << "  Wrong guesses: "  << pastGuesses << endl;
       cout << " ___________" << endl;
       cout << "|  _________|\tScore: " << score << endl;
       cout << "| |      |" << endl;
@@ -210,7 +219,7 @@ void hangman(int i)
       cout << "| |" << endl;
     break;
     case 4:
-      cout << "Word: " << blank << "  Guesses: "  << pastGuesses << endl;
+      cout << "Word: " << blank << "  Wrong guesses: "  << pastGuesses << endl;
       cout << " ___________" << endl;
       cout << "|  _________|\tScore: " << score << endl;
       cout << "| |      |" << endl;
@@ -221,7 +230,7 @@ void hangman(int i)
       cout << "| |" << endl;
     break;
     case 5:
-      cout << "Word: " << blank << "  Guesses: "  << pastGuesses << endl;
+      cout << "Word: " << blank << "  Wrong guesses: "  << pastGuesses << endl;
       cout << " ___________" << endl;
       cout << "|  _________|\tScore: " << score << endl;
       cout << "| |      |" << endl;
@@ -232,7 +241,7 @@ void hangman(int i)
       cout << "| |" << endl;
     break;
     case 6:
-      cout << "Word: " << blank << "  Guesses: "  << pastGuesses << endl;
+      cout << "Word: " << blank << "  Wrong guesses: "  << pastGuesses << endl;
       cout << " ___________" << endl;
       cout << "|  _________|\tScore: " << score << endl;
       cout << "| |      |" << endl;
@@ -244,6 +253,7 @@ void hangman(int i)
     break;
   }
 }
+
 // reveal first character and every character that is the same
 void hint()
 {
@@ -252,19 +262,21 @@ void hint()
   correct = 1;
   for (int i = 1; i < word.size(); i++)
   {
-         if (word[i] == c )
-          {
-            blank[i * 2] = c;
-            correct += 1;
-          }
+    if (word[i] == c )
+    {
+      blank[i * 2] = c;
+      correct += 1;
+    }
   }
 }
+
 // check for digits
-bool isNumeric(string s) {
-   for (int i = 0; i < s.length(); i++)
-      if (isdigit(s[i]))
-         return true; // when digit found, return false
-      return false;
+bool isNumeric(string s) 
+{
+  for (int i = 0; i < s.length(); i++)
+    if (isdigit(s[i]))
+      return true; // when digit found, return false
+  return false;
 }
 
 
