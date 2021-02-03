@@ -1,3 +1,5 @@
+Link to CUNY Hackathon2021 submission: https://devpost.com/software/hangman-0qxwag
+
 Our team is made up of four Queens College students. Three of us are students who just finished our first introductory CS class in C++, and a graduate student with little C++ experience who joined up with them through a teambuilding session. 
 
 All of us are first time hackathoners. Our names are Lloyd Empedrado, Nathan Murdach, Nil Patel and Shoya Dixon. All of us really wanted to make a game, however, we had to work around our technological limitations and limited experience that all of us could contribute to and feel proud of. A text-based game seemed like a completable task and using external text files was the last topic lightly covered in three of our members classes.
